@@ -187,6 +187,14 @@ public class MetamodelImpl implements MetamodelImplementor, Serializable {
 			);
 			entityPersisterMap.put( model.getEntityName(), cp );
 
+			// Also register the persister under the class name if available,
+			// otherwise the getEntityDescriptor(Class) won't work for entities with custom entity names
+			if ( model.getClassName() != null && !model.getClassName().equals( model.getEntityName() ) ) {
+				// But only if the class name is not registered already,
+				// as we can have the same class mapped to multiple entity names
+				entityPersisterMap.putIfAbsent( model.getClassName(), cp );
+			}
+
 			if ( cp.getConcreteProxyClass() != null
 					&& cp.getConcreteProxyClass().isInterface()
 					&& !Map.class.isAssignableFrom( cp.getConcreteProxyClass() )

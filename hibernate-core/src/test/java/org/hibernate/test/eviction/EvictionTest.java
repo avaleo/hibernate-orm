@@ -25,6 +25,13 @@ public class EvictionTest extends BaseCoreFunctionalTestCase {
 		return new Class[] { IsolatedEvictableEntity.class };
 	}
 
+	@Override
+	public String[] getMappings() {
+		return new String[] {
+				"eviction/EntityMappedWithEntityName.hbm.xml"
+		};
+	}
+
 	@Test
 	@TestForIssue( jiraKey = "HHH-7912" )
 	public void testNormalUsage() {
@@ -105,7 +112,7 @@ public class EvictionTest extends BaseCoreFunctionalTestCase {
 	}
 
 	@Test
-	@TestForIssue( jiraKey = "HHH-7912" )
+	@TestForIssue(jiraKey = "HHH-7912")
 	public void testEvictingNonEntity() {
 		Session session = openSession();
 		session.beginTransaction();
@@ -119,4 +126,24 @@ public class EvictionTest extends BaseCoreFunctionalTestCase {
 		session.close();
 	}
 
+	@Test
+	@TestForIssue(jiraKey = "HHH-19700")
+	public void testEvictingEntityMappedWithEntityName() {
+		Session session = openSession();
+		session.beginTransaction();
+
+		EntityMappedWithEntityName entityMappedWithEntityName = new EntityMappedWithEntityName();
+		entityMappedWithEntityName.setCapacity( 50 );
+		entityMappedWithEntityName.setDescription( "some description" );
+		session.persist( "EntityMappedTwice", entityMappedWithEntityName );
+
+		assertTrue( session.contains( entityMappedWithEntityName ) );
+		assertFalse( session.contains( new EntityMappedWithEntityName() ) );
+
+		session.evict( entityMappedWithEntityName );
+		session.evict( new EntityMappedWithEntityName() );
+
+		session.getTransaction().commit();
+		session.close();
+	}
 }
