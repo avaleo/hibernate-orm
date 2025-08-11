@@ -1,3 +1,10 @@
+== Hibernate@Nexus
+
+This is a fork of Hibernate, that was created solely for fixing https://hibernate.atlassian.net/browse/HHH-19700. It was the issue that surfaced during migration of Hibernate from 4.x to 5.x in Nexus.
+The issue is fixed in 6.x. The fix was rejected by Hibernate, because version 5.x is not maintained any more.
+
+I produced a jar with version 5.6.15.1 from /hhh-19700 branch and manually deployed it to our artifact repository.
+
 == Hibernate ORM
 
 image:https://img.shields.io/maven-central/v/org.hibernate.orm/hibernate-core.svg?label=Maven%20Central&style=for-the-badge[Maven Central,link=https://central.sonatype.com/search?namespace=org.hibernate.orm&sort=name]
