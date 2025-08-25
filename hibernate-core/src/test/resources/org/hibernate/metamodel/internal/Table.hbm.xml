@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.hibernate.metamodel.internal">
+    <class name="Leg" entity-name="leg" table="legs" >
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+    </class>
+
+    <class name="Table" entity-name="table" table="tables" >
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <set name="legs" lazy="false" cascade="none" fetch="join" access="field" inverse="true">
+            <key column="table_id" />
+            <one-to-many entity-name="leg" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -820,7 +820,7 @@ public class MetamodelImpl implements MetamodelImplementor, Serializable {
 	}
 
 	private String[] doGetImplementors(Class<?> clazz) throws MappingException {
-		ArrayList<String> results = new ArrayList<>();
+		HashSet<String> results = new HashSet<>();
 		for ( EntityPersister checkPersister : entityPersisters().values() ) {
 			if ( !Queryable.class.isInstance( checkPersister ) ) {
 				continue;
